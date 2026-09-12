@@ -581,21 +581,30 @@ body::before {
   position: absolute; inset: 0;
   background: linear-gradient(160deg, rgba(255,255,255,0.05), transparent 55%);
 }
-.mock-tee .product-mark { top: 34%; }
+.mock-tee .product-mark { top: 34%; left: 50%; transform: translateX(-50%); }
 
-/* joggers */
+/* joggers — waistband is the real element (clipped to its top strip),
+   each leg is a pseudo-element so the crotch gap is a real gap, not a
+   self-intersecting polygon (which produced a stray third "leg"). */
 .mock-pants {
   width: 150px; height: 210px;
-  background: var(--fabric);
-  clip-path: polygon(20% 0%, 80% 0%, 84% 46%, 100% 100%, 78% 100%, 62% 50%, 60% 100%, 40% 100%, 38% 50%, 22% 100%, 0% 100%, 16% 46%);
   position: relative;
+  /* waistband: a gradient hard-stop, not clip-path — clip-path on this
+     element would also clip its ::before/::after leg pseudo-elements */
+  background: linear-gradient(var(--fabric) 0 25%, transparent 25% 100%);
 }
+.mock-pants::before,
 .mock-pants::after {
   content: "";
-  position: absolute; inset: 0;
-  background: linear-gradient(160deg, rgba(255,255,255,0.05), transparent 55%);
+  position: absolute;
+  top: 23%;
+  width: 42%;
+  height: 77%;
+  background: var(--fabric);
 }
-.mock-pants .product-mark { top: 14%; }
+.mock-pants::before { left: 6%; clip-path: polygon(22% 0%, 100% 0%, 88% 100%, 6% 100%); }
+.mock-pants::after { right: 6%; clip-path: polygon(0% 0%, 78% 0%, 94% 100%, 12% 100%); }
+.mock-pants .product-mark { top: 8%; left: 50%; transform: translateX(-50%); z-index: 3; }
 .mock-pants .product-mark span { font-size: 8px; }
 
 /* mug */
