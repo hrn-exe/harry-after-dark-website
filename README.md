@@ -8,11 +8,49 @@ no build step, no framework, works anywhere that serves static files.
 
 - `index.html` — the whole page
 - `style.css` — the visual design (dark surveillance/case-file theme)
-- `app.js` — rendering, search/sort, live-clock, flashlight cursor, auto-update
-- `config.js` — your channel ID + optional API key (see below)
-- `videos-seed.js` — 30 real videos scraped from the channel, hand-editable
-- `assets/` — your real avatar, banner, and 30 video thumbnails (downloaded locally
-  so the site never depends on hotlinked images going stale)
+- `app.js` — rendering, search/sort, live-clock, flashlight cursor, auto-update, giscus loader
+- `config.js` — your channel ID, optional API key, and giscus (Community) config
+- `videos-seed.js` — 30 real Paranormal-era videos, hand-editable
+- `videos-seed-truecrime.js` — 30 real True-Crime-era videos (your channel's original
+  content before the pivot), numbered as its own Cold Case sequence
+- `404.html` — on-brand "tape not found" page GitHub Pages shows for bad links
+- `assets/` — your real avatar, banner, and thumbnails (downloaded locally so the
+  site never depends on hotlinked images going stale) — `thumbs/` for Paranormal,
+  `thumbs-tc/` for True Crime
+
+## The Archive: two eras, one grid
+
+A pill switch above the video grid ("Paranormal" / "True Crime") swaps between
+`videos-seed.js` and `videos-seed-truecrime.js` — same search/sort controls,
+different accent color and case-numbering style so it's visually obvious which
+era you're browsing. Only Paranormal ever gets new entries from the live sync,
+since that's what you're actively uploading now.
+
+## Shop
+
+A merch preview section ("Evidence Locker") with three CSS/SVG-mocked-up
+products — a tee, joggers, and a mug — all carrying your avatar mark and
+"Something's Wrong". There's no real checkout wired up (that needs a store
+provider like Shopify, Printful, or Fourthwall), so the buttons currently point
+to your Instagram as a "notify me" placeholder. Swap those `href`s in
+`index.html` (search for `#shop`) once you pick a print-on-demand provider.
+
+## Community
+
+The Community tab is real, working comments + reactions, powered by
+[giscus](https://giscus.app) — it stores every post as a GitHub Discussion on
+*this* repo, completely free, no database to run. 👍/👎 reactions on posts work
+as upvote/downvote. Visitors sign in with their own GitHub account to post.
+
+This only works because:
+1. Discussions is enabled on this repo (already done)
+2. The [giscus GitHub App](https://github.com/apps/giscus) is installed on this
+   repo specifically (you did this — if comments ever stop working, check it's
+   still installed under your GitHub account's Settings → Applications)
+
+If you ever fork this to a different repo, redo both steps and update the
+`GISCUS` block in `config.js` with the new repo's id/category id (get them from
+<https://giscus.app> — it has a config generator that fills these in for you).
 
 ## How the "auto-updates when I upload" part works
 

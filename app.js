@@ -2,11 +2,12 @@
   "use strict";
 
   const state = {
-    videos: SEED_VIDEOS.slice(),
+    paranormal: SEED_VIDEOS.slice(),
+    trueCrime: TRUE_CRIME_VIDEOS.slice(),
+    category: "paranormal",
     sort: "latest",
     query: "",
-    nextPageToken: null,
-    apiPrimed: false
+    nextPageToken: null
   };
 
   const grid = document.getElementById("archive-grid");
@@ -15,6 +16,13 @@
   const loadMoreBtn = document.getElementById("load-more");
   const liveDot = document.getElementById("live-dot");
   const liveNote = document.getElementById("live-note");
+  const liveSyncRow = document.getElementById("live-sync-row");
+  const archiveHeading = document.getElementById("archive-heading");
+  const archiveSearch = document.getElementById("archive-search");
+
+  function activeList() {
+    return state.category === "truecrime" ? state.trueCrime : state.paranormal;
+  }
 
   // ---------- clock overlay (mirrors the CCTV timestamp burn-in on the real thumbnails) ----------
   function tickClock() {
@@ -42,11 +50,11 @@
     });
   }
 
-  // ---------- marquee of recent case titles ----------
+  // ---------- marquee: always the ongoing paranormal feed, regardless of archive tab ----------
   function buildMarquee() {
     const track = document.getElementById("marquee-track");
     if (!track) return;
-    const titles = state.videos.slice(0, 12).map((v) => `CASE No.${v.case} — ${v.title}`);
+    const titles = state.paranormal.slice(0, 12).map((v) => `CASE No.${v.case} — ${v.title}`);
     const html = titles.map((t) => `<span>${escapeHtml(t)}</span>`).join('<span class="dot">●</span>');
     track.innerHTML = html + '<span class="dot">●</span>' + html;
   }
@@ -59,17 +67,27 @@
   }
 
   function thumbFor(v) {
-    return v.local ? `assets/thumbs/${v.id}.jpg` : `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`;
+    if (v.local) {
+      const dir = state.category === "truecrime" ? "assets/thumbs-tc" : "assets/thumbs";
+      return `${dir}/${v.id}.jpg`;
+    }
+    return `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`;
   }
 
   function watchUrl(id) {
     return `https://www.youtube.com/watch?v=${id}`;
   }
 
+  function caseLabel(v) {
+    return state.category === "truecrime"
+      ? `COLD CASE #${String(v.case).padStart(3, "0")}`
+      : `CASE №${v.case}`;
+  }
+
   // ---------- render ----------
   function render() {
     const q = state.query.trim().toLowerCase();
-    let list = state.videos.filter((v) => v.title.toLowerCase().includes(q));
+    let list = activeList().filter((v) => v.title.toLowerCase().includes(q));
 
     if (state.sort === "popular") {
       list = list.slice().sort((a, b) => (b.viewsN || 0) - (a.viewsN || 0));
@@ -81,10 +99,11 @@
 
     grid.innerHTML = "";
     emptyState.hidden = list.length !== 0;
+    const isTC = state.category === "truecrime";
 
     for (const v of list) {
       const card = document.createElement("a");
-      card.className = "tape-card";
+      card.className = isTC ? "tape-card tape-card--tc" : "tape-card";
       card.href = watchUrl(v.id);
       card.target = "_blank";
       card.rel = "noopener noreferrer";
@@ -92,7 +111,7 @@
         <div class="tape-thumb">
           <img src="${thumbFor(v)}" alt="" loading="lazy" width="336" height="188">
           <span class="tape-duration">${v.duration ? escapeHtml(v.duration) : "NEW"}</span>
-          <span class="tape-case">CASE №${v.case}</span>
+          <span class="tape-case">${caseLabel(v)}</span>
           <span class="tape-play" aria-hidden="true">▶</span>
         </div>
         <div class="tape-meta">
@@ -103,8 +122,25 @@
       grid.appendChild(card);
     }
 
-    countBadge.textContent = `${state.videos.length} logged locally · 189 total on the channel`;
+    countBadge.textContent = isTC
+      ? `${state.trueCrime.length} logged locally · ~100 total from the true-crime era`
+      : `${state.paranormal.length} logged locally · 189 total on the channel`;
   }
+
+  // ---------- category switch ----------
+  document.querySelectorAll(".category-pill").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".category-pill").forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      state.category = btn.dataset.cat;
+      const isTC = state.category === "truecrime";
+      archiveHeading.textContent = isTC ? "Cold Case Files" : "Case Files";
+      archiveSearch.placeholder = isTC ? "Search cold cases…" : "Search case files…";
+      liveSyncRow.hidden = isTC;
+      if (loadMoreBtn) loadMoreBtn.hidden = isTC || !SITE_CONFIG.YT_API_KEY;
+      render();
+    });
+  });
 
   // ---------- controls ----------
   document.querySelectorAll(".sort-tab").forEach((btn) => {
@@ -116,15 +152,15 @@
     });
   });
 
-  const searchInput = document.getElementById("archive-search");
-  if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
+  if (archiveSearch) {
+    archiveSearch.addEventListener("input", (e) => {
       state.query = e.target.value;
       render();
     });
   }
 
   // ---------- live auto-update: pulls your public upload feed, no API key required ----------
+  // Only ever touches the Paranormal list — that's the content you're still uploading.
   function parseRssMinutesAgo(pubDate) {
     const then = new Date(pubDate).getTime();
     const diffMs = Date.now() - then;
@@ -139,7 +175,7 @@
   }
 
   async function fetchLiveFeed() {
-    if (!window.SITE_CONFIG || !SITE_CONFIG.RSS_URL) return;
+    if (typeof SITE_CONFIG === "undefined" || !SITE_CONFIG.RSS_URL) return;
     try {
       const proxied = SITE_CONFIG.RSS_PROXY + encodeURIComponent(SITE_CONFIG.RSS_URL);
       const controller = new AbortController();
@@ -150,16 +186,16 @@
       const text = await res.text();
       const xml = new DOMParser().parseFromString(text, "text/xml");
       const entries = [...xml.getElementsByTagName("entry")];
-      const known = new Set(state.videos.map((v) => v.id));
+      const known = new Set(state.paranormal.map((v) => v.id));
       let added = 0;
-      const topCase = state.videos.reduce((m, v) => Math.max(m, v.case), 0);
+      const topCase = state.paranormal.reduce((m, v) => Math.max(m, v.case), 0);
 
       entries.forEach((entry, i) => {
         const videoId = entry.getElementsByTagName("yt:videoId")[0]?.textContent;
         if (!videoId || known.has(videoId)) return;
         const title = entry.getElementsByTagName("title")[0]?.textContent || "Untitled";
         const published = entry.getElementsByTagName("published")[0]?.textContent;
-        state.videos.unshift({
+        state.paranormal.unshift({
           id: videoId,
           case: topCase + (entries.length - i),
           title,
@@ -177,7 +213,7 @@
         liveDot?.classList.add("is-live");
         if (liveNote) liveNote.textContent = `${added} new upload${added > 1 ? "s" : ""} just synced from YouTube.`;
         buildMarquee();
-        render();
+        if (state.category === "paranormal") render();
       } else {
         liveDot?.classList.add("is-live");
         if (liveNote) liveNote.textContent = "You're all caught up — feed checked just now.";
@@ -189,7 +225,7 @@
 
   // ---------- optional: full back-catalog pagination via YouTube Data API ----------
   async function loadMoreFromApi() {
-    if (!SITE_CONFIG.YT_API_KEY) return;
+    if (!SITE_CONFIG.YT_API_KEY || state.category !== "paranormal") return;
     loadMoreBtn.disabled = true;
     loadMoreBtn.textContent = "LOADING…";
     try {
@@ -202,14 +238,14 @@
       if (state.nextPageToken) params.set("pageToken", state.nextPageToken);
       const res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?${params.toString()}`);
       const data = await res.json();
-      const known = new Set(state.videos.map((v) => v.id));
-      const topCase = state.videos.reduce((m, v) => Math.min(m, v.case), 999999);
+      const known = new Set(state.paranormal.map((v) => v.id));
+      const topCase = state.paranormal.reduce((m, v) => Math.min(m, v.case), 999999);
       let i = 0;
       for (const item of data.items || []) {
         const id = item.contentDetails.videoId;
         if (known.has(id)) continue;
         i++;
-        state.videos.push({
+        state.paranormal.push({
           id,
           case: topCase - i,
           title: item.snippet.title,
@@ -231,16 +267,49 @@
     }
   }
 
-  if (loadMoreBtn) {
-    if (SITE_CONFIG.YT_API_KEY) {
-      loadMoreBtn.hidden = false;
-      loadMoreBtn.addEventListener("click", loadMoreFromApi);
-    }
+  if (loadMoreBtn && SITE_CONFIG.YT_API_KEY) {
+    loadMoreBtn.hidden = false;
+    loadMoreBtn.addEventListener("click", loadMoreFromApi);
+  }
+
+  // ---------- community: load giscus (comments + reactions via GitHub Discussions) ----------
+  function loadGiscus() {
+    const container = document.getElementById("giscus-container");
+    const fallback = document.getElementById("giscus-fallback");
+    if (!container || typeof SITE_CONFIG === "undefined" || !SITE_CONFIG.GISCUS) return;
+
+    const g = SITE_CONFIG.GISCUS;
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    script.setAttribute("data-repo", g.repo);
+    script.setAttribute("data-repo-id", g.repoId);
+    script.setAttribute("data-category", g.category);
+    script.setAttribute("data-category-id", g.categoryId);
+    script.setAttribute("data-mapping", "pathname");
+    script.setAttribute("data-strict", "0");
+    script.setAttribute("data-reactions-enabled", "1");
+    script.setAttribute("data-emit-metadata", "0");
+    script.setAttribute("data-input-position", "top");
+    script.setAttribute("data-theme", "transparent_dark");
+    script.setAttribute("data-lang", "en");
+    container.appendChild(script);
+
+    // If giscus's iframe hasn't shown up after a few seconds (blocked by a
+    // sandboxed preview, an ad-blocker, or being off a real domain), show a
+    // plain-text fallback instead of a permanently empty box.
+    setTimeout(() => {
+      if (!container.querySelector("iframe.giscus-frame") && fallback) {
+        fallback.hidden = false;
+      }
+    }, 6000);
   }
 
   // ---------- boot ----------
   buildMarquee();
   render();
   fetchLiveFeed();
+  loadGiscus();
   setInterval(fetchLiveFeed, 10 * 60 * 1000);
 })();

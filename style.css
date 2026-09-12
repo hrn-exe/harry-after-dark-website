@@ -13,6 +13,10 @@
   --red-dim: #4a1119;
   --phosphor: #86b881;
   --phosphor-dim: #35472f;
+  --amber: #e8b923;
+  --amber-dim: #4f4014;
+  --fabric: #23262b;
+  --fabric-light: #3a3e45;
   --font-display: 'Staatliches', 'Arial Narrow', sans-serif;
   --font-mono: 'Courier Prime', 'Courier New', monospace;
   --font-body: 'Work Sans', -apple-system, sans-serif;
@@ -335,6 +339,32 @@ body::before {
   padding-left: 12px;
 }
 
+/* ---------- archive category switch ---------- */
+.category-switch {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.category-pill {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 9px 18px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.category-pill .n { color: var(--ink-faint); }
+.category-pill[data-cat="paranormal"].is-active { background: var(--phosphor-dim); border-color: var(--phosphor); color: var(--phosphor); }
+.category-pill[data-cat="truecrime"].is-active { background: var(--amber-dim); border-color: var(--amber); color: var(--amber); }
+
 /* ---------- archive controls ---------- */
 .archive-controls {
   display: flex;
@@ -420,6 +450,10 @@ body::before {
 }
 .tape-duration { right: 6px; bottom: 6px; }
 .tape-case { left: 6px; top: 6px; color: var(--ink-dim); }
+.tape-card--tc { border-top: 3px solid var(--amber-dim); }
+.tape-card--tc:hover { border-color: var(--line); border-top-color: var(--amber); }
+.tape-card--tc .tape-case { color: var(--amber); }
+.tape-card--tc .tape-duration { color: var(--amber); }
 .tape-play {
   position: absolute;
   inset: 0;
@@ -465,6 +499,168 @@ body::before {
   margin-top: 44px;
   flex-wrap: wrap;
 }
+
+/* ---------- shop: evidence locker ---------- */
+.locker-intro {
+  color: var(--ink-dim);
+  max-width: 62ch;
+  margin-bottom: 40px;
+  font-size: 16px;
+}
+.locker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 26px;
+}
+.exhibit {
+  background: var(--bg-raised);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+}
+.exhibit-tag {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--line);
+}
+.exhibit-tag .barcode {
+  display: flex;
+  gap: 2px;
+  align-items: flex-end;
+  height: 16px;
+}
+.exhibit-tag .barcode span { width: 2px; background: var(--ink-faint); display: block; }
+.exhibit-stage {
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 18px;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 12px, rgba(255,255,255,0.02) 12px 24px);
+  border-radius: 2px;
+}
+.product-mark {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  z-index: 2;
+}
+.product-mark img { width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(237,238,240,0.4); }
+.product-mark span {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--ink);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* tee */
+.mock-tee {
+  width: 170px; height: 190px;
+  background: var(--fabric);
+  clip-path: polygon(38% 0%, 50% 8%, 62% 0%, 82% 10%, 100% 30%, 86% 42%, 78% 34%, 78% 100%, 22% 100%, 22% 34%, 14% 42%, 0% 30%, 18% 10%);
+  position: relative;
+}
+.mock-tee::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, rgba(255,255,255,0.05), transparent 55%);
+}
+.mock-tee .product-mark { top: 34%; }
+
+/* joggers */
+.mock-pants {
+  width: 150px; height: 210px;
+  background: var(--fabric);
+  clip-path: polygon(20% 0%, 80% 0%, 84% 46%, 100% 100%, 78% 100%, 62% 50%, 60% 100%, 40% 100%, 38% 50%, 22% 100%, 0% 100%, 16% 46%);
+  position: relative;
+}
+.mock-pants::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, rgba(255,255,255,0.05), transparent 55%);
+}
+.mock-pants .product-mark { top: 14%; }
+.mock-pants .product-mark span { font-size: 8px; }
+
+/* mug */
+.mock-mug-wrap { display: flex; align-items: center; }
+.mock-mug {
+  width: 120px; height: 120px;
+  background: var(--fabric-light);
+  border-radius: 6px 16px 16px 6px;
+  position: relative;
+}
+.mock-mug::before {
+  content: "";
+  position: absolute;
+  right: -34px; top: 26px;
+  width: 40px; height: 60px;
+  border: 12px solid var(--fabric-light);
+  border-left: none;
+  border-radius: 0 30px 30px 0;
+}
+.mock-mug .product-mark { top: 30%; left: 50%; transform: translateX(-50%); }
+.mock-mug .product-mark span { font-size: 9px; }
+.mock-mug .product-mark img { width: 24px; height: 24px; }
+
+.exhibit-info { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+.exhibit-info h3 { font-family: var(--font-body); font-weight: 600; font-size: 16px; }
+.exhibit-price { font-family: var(--font-mono); color: var(--phosphor); font-size: 15px; }
+.exhibit-desc { color: var(--ink-faint); font-size: 13px; margin-bottom: 16px; flex: 1; }
+.exhibit .btn { width: 100%; justify-content: center; }
+.locker-footnote {
+  margin-top: 28px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+  text-align: center;
+}
+
+/* ---------- community ---------- */
+.community-intro {
+  color: var(--ink-dim);
+  max-width: 62ch;
+  margin-bottom: 32px;
+  font-size: 16px;
+}
+.community-rules {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+.community-rules b { color: var(--phosphor); }
+#giscus-container { min-height: 220px; }
+.giscus-fallback {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  padding: 32px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+.giscus-fallback a { color: var(--phosphor); }
 
 /* ---------- footer ---------- */
 .site-footer {

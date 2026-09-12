@@ -4,8 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Harry After Dark — Official Archive</title>
-<meta name="description" content="The official companion site for Harry After Dark: CCTV footage, ghost sightings, and paranormal compilations, auto-synced with every new YouTube upload.">
+<meta name="description" content="The official companion site for Harry After Dark: CCTV footage, ghost sightings, and true-crime cases, auto-synced with every new YouTube upload. Shop, community, and the full archive.">
 <link rel="icon" href="assets/avatar.jpg">
+<meta property="og:title" content="Harry After Dark — Official Archive">
+<meta property="og:description" content="Real CCTV recordings, paranormal sightings, and true-crime cases from the Harry After Dark YouTube channel. Something's wrong.">
+<meta property="og:image" content="assets/banner.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -32,6 +37,8 @@
     </a>
     <div class="nav-links">
       <a href="#archive">Archive</a>
+      <a href="#shop">Shop</a>
+      <a href="#community">Community</a>
       <a href="#transmission">Transmission</a>
       <a href="#footer">Contact</a>
     </div>
@@ -99,12 +106,17 @@ Whether you're a skeptic or a believer, these videos are meant to make you look 
     <div class="section-head">
       <div>
         <span class="section-eyebrow">// The Archive</span>
-        <h2>Case Files</h2>
+        <h2 id="archive-heading">Case Files</h2>
       </div>
       <span class="archive-count" id="archive-count"></span>
     </div>
 
-    <div class="live-sync">
+    <div class="category-switch" role="tablist" aria-label="Archive category">
+      <button class="category-pill is-active" data-cat="paranormal">👁 Paranormal <span class="n">· ongoing</span></button>
+      <button class="category-pill" data-cat="truecrime">🗂 True Crime <span class="n">· ~100 tapes</span></button>
+    </div>
+
+    <div class="live-sync" id="live-sync-row">
       <span class="dot" id="live-dot"></span>
       <span id="live-note">Checking your YouTube feed for new uploads…</span>
     </div>
@@ -123,7 +135,110 @@ Whether you're a skeptic or a believer, these videos are meant to make you look 
 
     <div class="archive-footer">
       <button class="btn btn-outline" id="load-more" hidden>Load More From The Archive</button>
-      <a class="btn btn-red" href="https://www.youtube.com/@HarryAfterDark/videos" target="_blank" rel="noopener noreferrer">View Full Archive on YouTube</a>
+      <a class="btn btn-red" id="archive-yt-link" href="https://www.youtube.com/@HarryAfterDark/videos" target="_blank" rel="noopener noreferrer">View Full Archive on YouTube</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="shop">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">// Evidence Locker</span>
+        <h2>The Shop</h2>
+      </div>
+    </div>
+    <p class="locker-intro">Wearable proof you watched till the end. Three exhibits, all carrying the mark and the line every viewer already knows: <strong>Something's Wrong.</strong></p>
+
+    <div class="locker-grid">
+      <div class="exhibit">
+        <div class="exhibit-tag">
+          <span>EXHIBIT A — APPAREL</span>
+          <span class="barcode" aria-hidden="true"><span style="height:16px"></span><span style="height:10px"></span><span style="height:14px"></span><span style="height:8px"></span><span style="height:16px"></span><span style="height:12px"></span></span>
+        </div>
+        <div class="exhibit-stage">
+          <div class="mock-tee">
+            <div class="product-mark">
+              <img src="assets/avatar.jpg" alt="">
+              <span>SOMETHING'S<br>WRONG</span>
+            </div>
+          </div>
+        </div>
+        <div class="exhibit-info">
+          <h3>"Something's Wrong" Tee</h3>
+          <span class="exhibit-price">$24</span>
+        </div>
+        <p class="exhibit-desc">Heavyweight black cotton. Chest-printed mark, faded like it's been worn through one too many late-night watch parties.</p>
+        <a class="btn btn-outline" href="https://www.instagram.com/harryafterdarkk/" target="_blank" rel="noopener noreferrer">Notify Me — Coming Soon</a>
+      </div>
+
+      <div class="exhibit">
+        <div class="exhibit-tag">
+          <span>EXHIBIT B — APPAREL</span>
+          <span class="barcode" aria-hidden="true"><span style="height:12px"></span><span style="height:16px"></span><span style="height:8px"></span><span style="height:14px"></span><span style="height:10px"></span><span style="height:16px"></span></span>
+        </div>
+        <div class="exhibit-stage">
+          <div class="mock-pants">
+            <div class="product-mark">
+              <img src="assets/avatar.jpg" alt="">
+              <span>SOMETHING'S WRONG</span>
+            </div>
+          </div>
+        </div>
+        <div class="exhibit-info">
+          <h3>Case File Joggers</h3>
+          <span class="exhibit-price">$42</span>
+        </div>
+        <p class="exhibit-desc">Tapered black joggers with a small woven mark at the hip. Built for stakeouts and staying in.</p>
+        <a class="btn btn-outline" href="https://www.instagram.com/harryafterdarkk/" target="_blank" rel="noopener noreferrer">Notify Me — Coming Soon</a>
+      </div>
+
+      <div class="exhibit">
+        <div class="exhibit-tag">
+          <span>EXHIBIT C — DRINKWARE</span>
+          <span class="barcode" aria-hidden="true"><span style="height:16px"></span><span style="height:8px"></span><span style="height:12px"></span><span style="height:16px"></span><span style="height:10px"></span><span style="height:14px"></span></span>
+        </div>
+        <div class="exhibit-stage">
+          <div class="mock-mug-wrap">
+            <div class="mock-mug">
+              <div class="product-mark">
+                <img src="assets/avatar.jpg" alt="">
+                <span>SOMETHING'S<br>WRONG</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="exhibit-info">
+          <h3>Night Shift Mug</h3>
+          <span class="exhibit-price">$16</span>
+        </div>
+        <p class="exhibit-desc">11oz ceramic, matte black glaze. Holds the coffee you'll need for one more episode at 2am.</p>
+        <a class="btn btn-outline" href="https://www.instagram.com/harryafterdarkk/" target="_blank" rel="noopener noreferrer">Notify Me — Coming Soon</a>
+      </div>
+    </div>
+    <p class="locker-footnote">Merch previews only — the store isn't live yet. Follow on Instagram to get pinged the moment it drops.</p>
+  </div>
+</section>
+
+<section class="section section-alt" id="community">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">// Tip Line</span>
+        <h2>Community</h2>
+      </div>
+    </div>
+    <p class="community-intro">Argue the case. Post your own footage theories. Vote the creepiest sighting to the top — <strong>👍</strong> and <strong>👎</strong> on any post work exactly like upvote/downvote.</p>
+    <div class="community-rules">
+      <span><b>01 —</b> No doxxing, ever.</span>
+      <span><b>02 —</b> Skeptics welcome.</span>
+      <span><b>03 —</b> Sign in with GitHub to post.</span>
+    </div>
+    <div id="giscus-container">
+      <div class="giscus-fallback" id="giscus-fallback" hidden>
+        Community threads run on GitHub Discussions and need a real domain to load (they won't render in this preview).
+        <br>Open the live site to read and join in: <a href="https://hrn-exe.github.io/harry-after-dark-website/#community" target="_blank" rel="noopener noreferrer">hrn-exe.github.io/harry-after-dark-website</a>
+      </div>
     </div>
   </div>
 </section>
@@ -146,6 +261,12 @@ Whether you're a skeptic or a believer, these videos are meant to make you look 
           <a href="https://www.youtube.com/@HarryAfterDark/shorts" target="_blank" rel="noopener noreferrer">Shorts</a>
         </div>
         <div class="footer-col">
+          <h4>More</h4>
+          <a href="#shop">Shop</a>
+          <a href="#community">Community</a>
+          <a href="#transmission">About</a>
+        </div>
+        <div class="footer-col">
           <h4>Follow</h4>
           <a href="https://www.youtube.com/@HarryAfterDark" target="_blank" rel="noopener noreferrer">YouTube</a>
           <a href="https://www.instagram.com/harryafterdarkk/" target="_blank" rel="noopener noreferrer">Instagram</a>
@@ -162,6 +283,7 @@ Whether you're a skeptic or a believer, these videos are meant to make you look 
 
 <script src="config.js"></script>
 <script src="videos-seed.js"></script>
+<script src="videos-seed-truecrime.js"></script>
 <script src="app.js"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>

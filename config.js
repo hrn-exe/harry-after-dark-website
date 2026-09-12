@@ -18,5 +18,15 @@ const SITE_CONFIG = {
   UPLOADS_PLAYLIST_ID: "UU3d7CVO4xmyWt35LCXMKLXg",
   YT_API_KEY: "", // optional, see note above
   RSS_URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UC3d7CVO4xmyWt35LCXMKLXg",
-  RSS_PROXY: "https://api.allorigins.win/raw?url="
+  RSS_PROXY: "https://api.allorigins.win/raw?url=",
+
+  // Community tab (giscus — comments + 👍/👎 reactions, backed by GitHub
+  // Discussions on this repo). Requires the giscus GitHub App to be
+  // installed on the repo: https://github.com/apps/giscus
+  GISCUS: {
+    repo: "hrn-exe/harry-after-dark-website",
+    repoId: "R_kgDOUYYD1g",
+    category: "General",
+    categoryId: "DIC_kwDOUYYD1s4DFeQ5"
+  }
 };
