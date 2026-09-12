@@ -8,8 +8,8 @@ no build step, no framework, works anywhere that serves static files.
 
 - `index.html` — the whole page
 - `style.css` — the visual design (dark surveillance/case-file theme)
-- `app.js` — rendering, search/sort, live-clock, flashlight cursor, auto-update, giscus loader
-- `config.js` — your channel ID, optional API key, and giscus (Community) config
+- `app.js` — rendering, search/sort, live-clock, flashlight cursor, auto-update
+- `config.js` — your channel ID and optional YouTube Data API key
 - `videos-seed.js` — 30 real Paranormal-era videos, hand-editable
 - `videos-seed-truecrime.js` — 30 real True-Crime-era videos (your channel's original
   content before the pivot), numbered as its own Cold Case sequence
@@ -28,29 +28,19 @@ since that's what you're actively uploading now.
 
 ## Shop
 
-A merch preview section ("Evidence Locker") with three CSS/SVG-mocked-up
-products — a tee, joggers, and a mug — all carrying your avatar mark and
-"Something's Wrong". There's no real checkout wired up (that needs a store
-provider like Shopify, Printful, or Fourthwall), so the buttons currently point
-to your Instagram as a "notify me" placeholder. Swap those `href`s in
-`index.html` (search for `#shop`) once you pick a print-on-demand provider.
+A merch preview section ("Evidence Locker") with three products — a tee,
+joggers, and a mug. Each one shows your own artwork if you've added it, or
+falls back to a generated placeholder (your avatar + "Something's Wrong") if
+you haven't yet.
 
-## Community
+**To use your own designs**, drop PNGs into `assets/shop/` — see
+[`assets/shop/README.md`](assets/shop/README.md) for exact filenames and
+sizes. No code changes needed; the page detects the file and swaps it in.
 
-The Community tab is real, working comments + reactions, powered by
-[giscus](https://giscus.app) — it stores every post as a GitHub Discussion on
-*this* repo, completely free, no database to run. 👍/👎 reactions on posts work
-as upvote/downvote. Visitors sign in with their own GitHub account to post.
-
-This only works because:
-1. Discussions is enabled on this repo (already done)
-2. The [giscus GitHub App](https://github.com/apps/giscus) is installed on this
-   repo specifically (you did this — if comments ever stop working, check it's
-   still installed under your GitHub account's Settings → Applications)
-
-If you ever fork this to a different repo, redo both steps and update the
-`GISCUS` block in `config.js` with the new repo's id/category id (get them from
-<https://giscus.app> — it has a config generator that fills these in for you).
+There's no real checkout wired up (that needs a store provider like Shopify,
+Printful, or Fourthwall), so the buttons currently point to your Instagram as
+a "notify me" placeholder. Swap those `href`s in `index.html` (search for
+`#shop`) once you pick a print-on-demand provider.
 
 ## How the "auto-updates when I upload" part works
 

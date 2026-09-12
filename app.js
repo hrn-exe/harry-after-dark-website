@@ -272,44 +272,9 @@
     loadMoreBtn.addEventListener("click", loadMoreFromApi);
   }
 
-  // ---------- community: load giscus (comments + reactions via GitHub Discussions) ----------
-  function loadGiscus() {
-    const container = document.getElementById("giscus-container");
-    const fallback = document.getElementById("giscus-fallback");
-    if (!container || typeof SITE_CONFIG === "undefined" || !SITE_CONFIG.GISCUS) return;
-
-    const g = SITE_CONFIG.GISCUS;
-    const script = document.createElement("script");
-    script.src = "https://giscus.app/client.js";
-    script.async = true;
-    script.crossOrigin = "anonymous";
-    script.setAttribute("data-repo", g.repo);
-    script.setAttribute("data-repo-id", g.repoId);
-    script.setAttribute("data-category", g.category);
-    script.setAttribute("data-category-id", g.categoryId);
-    script.setAttribute("data-mapping", "pathname");
-    script.setAttribute("data-strict", "0");
-    script.setAttribute("data-reactions-enabled", "1");
-    script.setAttribute("data-emit-metadata", "0");
-    script.setAttribute("data-input-position", "top");
-    script.setAttribute("data-theme", "transparent_dark");
-    script.setAttribute("data-lang", "en");
-    container.appendChild(script);
-
-    // If giscus's iframe hasn't shown up after a few seconds (blocked by a
-    // sandboxed preview, an ad-blocker, or being off a real domain), show a
-    // plain-text fallback instead of a permanently empty box.
-    setTimeout(() => {
-      if (!container.querySelector("iframe.giscus-frame") && fallback) {
-        fallback.hidden = false;
-      }
-    }, 6000);
-  }
-
   // ---------- boot ----------
   buildMarquee();
   render();
   fetchLiveFeed();
-  loadGiscus();
   setInterval(fetchLiveFeed, 10 * 60 * 1000);
 })();
