@@ -28,6 +28,16 @@
 
 [hidden] { display: none !important; }
 
+/* Every tappable control: kill the ~300ms mobile tap delay some browsers
+   add while deciding if a tap is the first half of a double-tap-to-zoom
+   (the viewport meta tag disables page zoom, but individual elements can
+   still get flagged for it — this is what made Add to Cart / size buttons
+   feel unresponsive on a real phone), and drop the default grey flash. */
+button, a, input, .size-picker button, .category-pill, .sort-tab {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 html { color-scheme: dark; }
 html.intro-lock, html.intro-lock body,
 html.cart-lock, html.cart-lock body { overflow: hidden; height: 100%; }
@@ -916,23 +926,27 @@ body::before {
 
 .size-picker {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 14px;
 }
 .size-picker button {
   flex: 1;
+  min-height: 44px; /* Apple/Google's minimum comfortable touch target */
   padding: 9px 0;
   background: var(--bg-panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   color: var(--ink-dim);
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
 }
 .size-picker button:hover { border-color: var(--ink-dim); color: var(--ink); }
+.size-picker button:active { border-color: var(--red); transform: scale(0.96); }
 .size-picker button.is-active { border-color: var(--red); color: var(--ink); background: var(--red-dim); }
 
+.add-to-cart { min-height: 48px; }
+.add-to-cart:active { transform: scale(0.98); }
 .add-to-cart.is-added { background: var(--phosphor-dim); color: var(--phosphor); }
 
 .locker-footnote {
@@ -1014,15 +1028,17 @@ body::before {
   font-size: 13px;
 }
 .qty-stepper button {
-  width: 22px; height: 22px;
+  width: 30px; height: 30px;
   border: 1px solid var(--line);
   background: var(--bg-raised);
   color: var(--ink);
   border-radius: 3px;
   cursor: pointer;
   line-height: 1;
+  font-size: 15px;
 }
 .qty-stepper button:hover { border-color: var(--ink-dim); }
+.qty-stepper button:active { border-color: var(--red); }
 .cart-item-price { font-family: var(--font-mono); color: var(--phosphor); font-size: 13px; }
 .cart-item-remove {
   background: transparent;
