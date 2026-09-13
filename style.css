@@ -794,19 +794,17 @@ body::before {
   white-space: nowrap;
 }
 
-/* your own artwork, dropped in at assets/shop/*.png — falls back to the
-   generated mark above (via onerror in the HTML) until a file exists */
-.product-design {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
+/* your own product photo, dropped in at assets/shop/*.png — this REPLACES
+   the drawn mockup below entirely (not printed onto it); falls back to the
+   CSS mockup + generated mark via onerror in the HTML until a file exists */
+.product-photo {
+  max-width: 92%;
+  max-height: 92%;
+  width: auto;
+  height: auto;
   object-fit: contain;
-  max-width: 100%;
+  border-radius: 4px;
 }
-.mock-tee .product-design { top: 22%; width: 58%; max-height: 55%; }
-.mock-pants .product-design { top: 6%; width: 46%; max-height: 30%; }
-.mock-mug .product-design { top: 18%; width: 62%; max-height: 64%; }
 
 /* tee */
 .mock-tee {
