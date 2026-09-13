@@ -9,7 +9,8 @@ no build step, no framework, works anywhere that serves static files.
 - `index.html` — the whole page
 - `style.css` — the visual design (dark surveillance/case-file theme)
 - `app.js` — rendering, search/sort, live-clock, flashlight cursor, auto-update
-- `config.js` — your channel ID and optional YouTube Data API key
+- `shop.js` — cart, checkout panel, and hover-zoom for the Shop section
+- `config.js` — your channel ID, optional YouTube Data API key, and checkout links
 - `videos-seed.js` — 30 real Paranormal-era videos, hand-editable
 - `videos-seed-truecrime.js` — 30 real True-Crime-era videos (your channel's original
   content before the pivot), numbered as its own Cold Case sequence
@@ -28,19 +29,33 @@ since that's what you're actively uploading now.
 
 ## Shop
 
-A merch preview section ("Evidence Locker") with three products — a tee,
-joggers, and a mug. Each one shows your own artwork if you've added it, or
+A merch section ("Evidence Locker") with three products — a tee, joggers,
+and a mug. Each one shows your own product photo if you've added it, or
 falls back to a generated placeholder (your avatar + "Something's Wrong") if
 you haven't yet.
 
-**To use your own designs**, drop PNGs into `assets/shop/` — see
-[`assets/shop/README.md`](assets/shop/README.md) for exact filenames and
-sizes. No code changes needed; the page detects the file and swaps it in.
+**To use your own designs**, drop product photos into `assets/shop/` — see
+[`assets/shop/README.md`](assets/shop/README.md) for exact filenames. No
+code changes needed; the page detects the file and swaps it in.
 
-There's no real checkout wired up (that needs a store provider like Shopify,
-Printful, or Fourthwall), so the buttons currently point to your Instagram as
-a "notify me" placeholder. Swap those `href`s in `index.html` (search for
-`#shop`) once you pick a print-on-demand provider.
+**Hovering a product photo zooms it** toward wherever the cursor is (desktop
+only — touch screens just show the photo normally, since there's no cursor
+to zoom toward).
+
+**The cart is fully live**: Add to Cart, quantities, remove, a running
+subtotal — all real, persisted in the visitor's browser (`localStorage`), no
+backend needed. Sizes (S/M/L/XL) apply to the tee and joggers.
+
+**Checkout is intentionally honest about what it is.** This is a static
+site with no server, so it can never safely collect a real card number
+itself — that needs a PCI-compliant backend. Right now, clicking Checkout
+shows the order total and a "DM it to me on Instagram" button instead of
+faking a payment form. To take real card/PayPal payments, set up a free
+**Stripe Payment Link** (a couple of minutes, no code — Stripe hosts the
+actual payment page) and/or a **PayPal.me** link, then paste the URL(s) into
+the `CHECKOUT` block in `config.js`. The matching button appears
+automatically once a link is set. Full instructions are in the comment
+above that block in `config.js`.
 
 ## How the "auto-updates when I upload" part works
 

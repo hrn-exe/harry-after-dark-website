@@ -18,5 +18,36 @@ const SITE_CONFIG = {
   UPLOADS_PLAYLIST_ID: "UU3d7CVO4xmyWt35LCXMKLXg",
   YT_API_KEY: "", // optional, see note above
   RSS_URL: "https://www.youtube.com/feeds/videos.xml?channel_id=UC3d7CVO4xmyWt35LCXMKLXg",
-  RSS_PROXY: "https://api.allorigins.win/raw?url="
+  RSS_PROXY: "https://api.allorigins.win/raw?url=",
+
+  /*
+   * Checkout. The cart itself (add/remove/quantities) is fully live —
+   * that's just local state, no backend needed. Actually TAKING payment
+   * is different: this is a static site with no server, so it can never
+   * safely collect a card number itself (that needs a PCI-compliant
+   * backend). The honest, standard way static sites take real payments
+   * is by sending the shopper to a page a real processor hosts for you.
+   *
+   * Fill in either (or both) of these once you've set one up, and the
+   * matching button in the checkout panel goes live automatically:
+   *
+   * STRIPE_LINK — a Stripe Payment Link. Free Stripe account →
+   *   dashboard.stripe.com/payment-links → create one per product (or
+   *   one link that lets the buyer adjust quantity) → paste the URL.
+   *   Stripe hosts the actual card form; you never touch card data.
+   *   https://stripe.com/docs/payment-links
+   *
+   * PAYPAL_LINK — a PayPal.me link (paypal.me/yourname) or a PayPal
+   *   "Buy Now" button URL from your PayPal Business account.
+   *
+   * Until you add one, the Checkout panel is honest about it: it shows
+   * the order + total and offers to send it to you as a DM/email
+   * instead of pretending a payment went through.
+   */
+  CHECKOUT: {
+    STRIPE_LINK: "",
+    PAYPAL_LINK: "",
+    CONTACT_INSTAGRAM: "https://www.instagram.com/harryafterdarkk/",
+    CONTACT_EMAIL: ""
+  }
 };
