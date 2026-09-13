@@ -39,6 +39,28 @@
   tickClock();
   setInterval(tickClock, 1000);
 
+  // ---------- mobile nav (hamburger + slide-down panel) ----------
+  const navToggle = document.getElementById("nav-toggle");
+  const mobileNav = document.getElementById("mobile-nav");
+  if (navToggle && mobileNav) {
+    const closeMobileNav = () => {
+      mobileNav.hidden = true;
+      navToggle.setAttribute("aria-expanded", "false");
+    };
+    navToggle.addEventListener("click", () => {
+      const isOpen = navToggle.getAttribute("aria-expanded") === "true";
+      mobileNav.hidden = isOpen;
+      navToggle.setAttribute("aria-expanded", String(!isOpen));
+    });
+    mobileNav.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMobileNav));
+    window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMobileNav(); });
+    // Collapse back to the desktop layout if the viewport is resized wide
+    // (e.g. rotating a tablet, or a DevTools resize) while the panel is open.
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 860) closeMobileNav();
+    });
+  }
+
   // ---------- flashlight cursor over the hero ----------
   const hero = document.getElementById("hero");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

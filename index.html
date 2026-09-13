@@ -15,6 +15,26 @@
 </head>
 <body>
 
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-noise"></div>
+  <div class="intro-particles" id="intro-particles"></div>
+  <div class="intro-scan"></div>
+  <div class="intro-vignette"></div>
+  <div class="intro-stage">
+    <span class="intro-rec">● REC — SIGNAL LOST</span>
+    <div class="intro-figure">
+      <div class="intro-glow"></div>
+      <img src="assets/avatar.jpg" alt="">
+    </div>
+    <div class="intro-title">
+      <span>SOMETHING'S</span>
+      <span>WRONG</span>
+    </div>
+    <div class="intro-skip">tap anywhere to continue</div>
+  </div>
+</div>
+<script src="intro.js"></script>
+
 <div class="status-ticker">
   <div class="wrap">
     <div class="status-left">
@@ -41,7 +61,17 @@
       <a href="#transmission">Transmission</a>
       <a href="#footer">Contact</a>
     </div>
-    <a class="btn btn-red" href="https://www.youtube.com/@HarryAfterDark?sub_confirmation=1" target="_blank" rel="noopener noreferrer">Subscribe</a>
+    <a class="btn btn-red nav-subscribe" href="https://www.youtube.com/@HarryAfterDark?sub_confirmation=1" target="_blank" rel="noopener noreferrer">Subscribe</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-nav" id="mobile-nav" hidden>
+    <a href="#archive">Archive</a>
+    <a href="#shop">Shop</a>
+    <a href="#transmission">Transmission</a>
+    <a href="#footer">Contact</a>
+    <a class="btn btn-red" href="https://www.youtube.com/@HarryAfterDark?sub_confirmation=1" target="_blank" rel="noopener noreferrer">▶ Subscribe</a>
   </div>
 </nav>
 
